@@ -3,8 +3,7 @@ https://www.edureka.co/blog/docker-commands/
 https://www.youtube.com/watch?v=uvTl6GefR9o
 https://www.geeksforgeeks.org/how-to-run-a-python-script-using-docker/
 
-
-
+Docker commands:
 1. Install docker
    # check docker version
    docker –version
@@ -17,15 +16,17 @@ https://www.geeksforgeeks.org/how-to-run-a-python-script-using-docker/
    vi Dockerfile
    vi Main.java
 
-4. Build custom docker image 'java_gettimee' using base image 'python:latest'
+4. Build custom docker image 'java_gettime' using base image 'python:latest'
    # build image
-   sudo docker build -t java_gettimee .
+   # -t: tag
+   sudo docker build -t java_gettime .
    
    # list all docker images
    sudo docker images
 
    # run docker as a container
-   sudo docker run -it java_gettimee
+   # -it: interactive, terminal
+   sudo docker run -it java_gettime
 
    # list all running containers 
    sudo docker ps
@@ -38,8 +39,8 @@ https://www.geeksforgeeks.org/how-to-run-a-python-script-using-docker/
    # start container with id 12345
    sudo docker start 12345
 
-   # remove docker image 'java_gettimee' by force
-   sudo docker rmi java_gettimee -f
+   # remove docker image 'java_gettime' by force
+   sudo docker rmi java_gettime -f
 
    # clean up any resources — images, containers, volumes, and networks — that are dangling (not tagged or associated with a container)
    docker system prune
