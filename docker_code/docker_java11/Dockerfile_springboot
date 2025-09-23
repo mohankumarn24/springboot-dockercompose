@@ -1,4 +1,17 @@
-FROM openjdk:8
-ADD ./target/spring-boot-redis-cache-0.0.1-SNAPSHOT.jar /usr/src/spring-boot-redis-cache-0.0.1-SNAPSHOT.jar
-WORKDIR usr/src
-ENTRYPOINT ["java","-jar", "spring-boot-redis-cache-0.0.1-SNAPSHOT.jar"]
+# Ubuntu/Debian-based image
+FROM openjdk:11
+
+# Update package index, install curl, and clean up cache
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy your JAR
+COPY target/spring-boot-redis-cache-0.0.1-SNAPSHOT.jar app.jar
+
+# Expose default Spring Boot port
+EXPOSE 8080
+
+# Run the app
+ENTRYPOINT ["java","-jar","app.jar"]
