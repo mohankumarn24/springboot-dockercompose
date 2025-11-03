@@ -1,0 +1,67 @@
+Two instances of Spring Boot app running as separate containers, both connecting to a single Postgres container
+
+1. Docker Compose File (docker-compose.yml)
+
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app1:
+    image: my-springboot-app:latest
+    container_name: spring_app1
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  app2:
+    image: my-springboot-app:latest
+    container_name: spring_app2
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    depends_on:
+      - db
+    ports:
+      - "8081:8080"
+
+volumes:
+  db_data:
+
+  
+2️. Explanation
+	- db service:
+		-- Runs PostgreSQL.
+		-- Exposes 5432 to host (optional, mainly for local access).
+		-- Uses a named volume db_data for persistence.
+	- app1 and app2 services:
+		-- Both run your Spring Boot image.
+		-- SPRING_DATASOURCE_URL points to db:5432 — Docker Compose creates an internal network where service names act as hostnames.
+		-- app1 exposes 8080 to host, app2 exposes 8081.
+	- depends_on ensures the DB container starts before the apps.
+
+3️. How to Start
+	- docker-compose up -d
+	- This will start 3 containers:
+		-- my_postgres
+		-- spring_app1
+		-- spring_app2
+		-- Both apps will connect to the same Postgres DB automatically.
+		
+This setup is production-friendly for development and testing.		
