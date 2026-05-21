@@ -47,6 +47,12 @@ Docker commands:
 
    # remove stopped container
    docker container rm [container_id]
+   
+   # show docker disk usage summary
+   docker system df 
+   
+   # deletes ONLY docker build cache
+   docker builder prune -a
 
 5. Access running container
    docker exec -it <container id> bash
